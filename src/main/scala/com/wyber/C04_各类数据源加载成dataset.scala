@@ -4,6 +4,7 @@ import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.types.{DataType, DataTypes, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
 
+import java.util
 import java.util.Properties
 
 object C04_各类数据源加载成dataset {
@@ -18,9 +19,9 @@ object C04_各类数据源加载成dataset {
 //    loadJson(spark)
 //    loadJson2(spark)
 //    loadJDBC(spark)
-//    writeFileTypes(spark)
+    df写出成各种数据源(spark)
 //    loadParquet(spark)
-    loadOrc(spark)
+//    loadOrc(spark)
     spark.close()
   }
 
@@ -161,7 +162,7 @@ object C04_各类数据源加载成dataset {
   }
 
   //写各类文件
-  def writeFileTypes(spark: SparkSession): Unit = {
+  def df写出成各种数据源(spark: SparkSession): Unit = {
     val schema = StructType(Seq(
       StructField("id", DataTypes.StringType),
       StructField("name", DataTypes.StringType),
@@ -180,14 +181,28 @@ object C04_各类数据源加载成dataset {
 
     val df: DataFrame = spark.read.schema(schema).json("data/sql/stu2.txt")
 
-    //将df写成各类结构
-    df.write.parquet("data/sql/out-parquet/")
-    df.write.json("data/sql/out-json/")
-    df.write.orc("data/sql/out-orc/")
-    //    df.write.csv("data/sql/out-csv/") 简单结构的dataframe才能写成csv文件，不支持struct，map，array等复合类型
-    val df2 = df.drop("info", "scores", "school")
-    df2.write.csv("data/sql/out-csv/")
+//    //将df写成各类结构
+//    df.write.parquet("data/sql/out-parquet/")
+//    df.write.json("data/sql/out-json/")
+//    df.write.orc("data/sql/out-orc/")
+//    //    df.write.csv("data/sql/out-csv/") 简单结构的dataframe才能写成csv文件，不支持struct，map，array等复合类型
+//    val df2 = df.drop("info", "scores", "school")
+//    df2.write.csv("data/sql/out-csv/")
 
+    //将df写成mysql的表
+    val props = new Properties()
+    props.setProperty("user","root")
+    props.setProperty("password","123456")
+
+    val df3 = df.drop("info", "scores", "school") //因为jdbc中不存在array，map，struct等类型
+
+    //SaveMode有多种取值：
+    //overWrite ==》 覆盖写入：append ==》追加写
+    //Ignore ==》如果存在，什么也不做 ErrorIfExists ==》如果目标表存在，就抛出异常
+
+    df3.write
+      .mode("Append")
+      .jdbc("jdbc:mysql://localhost:3306/test", "t_x", props) //
 
   }
 
