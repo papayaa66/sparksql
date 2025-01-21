@@ -13,9 +13,9 @@ object C04_各类数据源加载成dataset {
       .master("local")
       .getOrCreate()
 
-//    loadCsv(spark)
-//    loadJson(spark)
-//    loadJson2(spark)
+    loadCsv(spark)
+    loadJson(spark)
+    loadJson2(spark)
     loadJDBC(spark)
 
     spark.close()
