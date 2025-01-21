@@ -36,8 +36,10 @@
         <dependency>
             <groupId>org.apache.spark</groupId>
             <artifactId>spark-hive_2.12</artifactId>
-            <version>3.1.2</version>
-            <scope>provided</scope>
+            <version>3.1.3</version>
+<!--            scpoe表示这个依赖应该存储在于程序的编译的哪个生命周期-->
+<!--            provided表示：表示不要放在运行期间，因为：运行环境中会有这个依赖-->
+<!--            <scope>provided</scope>-->
         </dependency>
 
     </dependencies>
