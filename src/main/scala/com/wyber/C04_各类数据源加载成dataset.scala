@@ -1,4 +1,5 @@
 package com.wyber
+
 import org.apache.log4j.{Level, Logger}
 import org.apache.spark.sql.types.{DataType, DataTypes, StructField, StructType}
 import org.apache.spark.sql.{DataFrame, SparkSession}
@@ -13,13 +14,15 @@ object C04_各类数据源加载成dataset {
       .master("local")
       .getOrCreate()
 
-    loadCsv(spark)
-    loadJson(spark)
-    loadJson2(spark)
-    loadJDBC(spark)
+    //    loadCsv(spark)
+    //    loadJson(spark)
+    //    loadJson2(spark)
+    //    loadJDBC(spark)
+    writeFileTypes(spark)
 
     spark.close()
   }
+
   //test
   //读csv文件数据源
   def loadCsv(spark: SparkSession): Unit = {
@@ -31,6 +34,7 @@ object C04_各类数据源加载成dataset {
     df1.printSchema()
     df1.show()
   }
+
   //读简单json数据源
   def loadJson(spark: SparkSession): Unit = {
 
@@ -99,8 +103,8 @@ object C04_各类数据源加载成dataset {
   //读jdbc读表数据源
   def loadJDBC(spark: SparkSession): Unit = {
     val properties = new Properties()
-    properties.setProperty("user","root")
-    properties.setProperty("password","123456")
+    properties.setProperty("user", "root")
+    properties.setProperty("password", "123456")
 
     val df: DataFrame = spark.read.jdbc(
       "jdbc:mysql://localhost:3306/test",
@@ -151,7 +155,38 @@ object C04_各类数据源加载成dataset {
     res1.show()
     res2.show()
     res3.show()
-//    df.printSchema()
-//    df.show()
+    //    df.printSchema()
+    //    df.show()
+  }
+
+  //写各类文件
+  def writeFileTypes(spark: SparkSession): Unit = {
+    val schema = StructType(Seq(
+      StructField("id", DataTypes.StringType),
+      StructField("name", DataTypes.StringType),
+      StructField("age", DataTypes.DoubleType),
+      StructField("gender", DataTypes.StringType),
+      StructField("school", DataTypes.createStructType(
+        Array(
+          StructField("name", DataTypes.StringType),
+          StructField("graduate", DataTypes.IntegerType),
+          StructField("rank", DataTypes.IntegerType)
+        )
+      )),
+      StructField("info", DataTypes.createMapType(DataTypes.StringType, DataTypes.StringType)),
+      StructField("scores", DataTypes.createArrayType(DataTypes.DoubleType))
+    ))
+
+    val df: DataFrame = spark.read.schema(schema).json("data/sql/stu2.txt")
+
+    //将df写成各类结构
+    df.write.parquet("data/sql/out-parquet/")
+    df.write.json("data/sql/out-json/")
+    df.write.orc("data/sql/out-orc/")
+    //    df.write.csv("data/sql/out-csv/") 简单结构的dataframe才能写成csv文件，不支持struct，map，array等复合类型
+    val df2 = df.drop("info", "scores", "school")
+    df2.write.csv("data/sql/out-csv/")
+
+
   }
 }
