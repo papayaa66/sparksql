@@ -1,0 +1,8 @@
+{"id":1,"school":{"name":"Tsinghua University","graduate":2018,"rank":1},"name":"aa","info":{"city":"北京","phone":"1334455","obj":"刘亦菲"},"scores":[95,80,86,87],"age":18,"gender":"male"}
+{"id":2,"school":{"name":"Peking University","graduate":2015,"rank":2},"name":"bb","info":{"city":"北京","phone":"1334455","obj":"刘亦菲"},"scores":[92,84,68,77],"age":28,"gender":"male"}
+{"id":3,"school":{"name":"Fudan University","graduate":2020,"rank":3},"name":"cc","info":{"city":"北京","phone":"1334455"},"scores":[97,80,66,87],"age":38,"gender":"male"}
+{"id":4,"school":{"name":"Zhejiang University","graduate":2017,"rank":4},"name":"dd","info":{"city":"北京","phone":"1334455","jiYou":"张含韵"},"scores":[94,70,96,67],"age":28,"gender":"female"}
+{"id":5,"school":{"name":"Tsinghua University","graduate":2019,"rank":5},"name":"ee","info":{"city":"北京","job":"programmer"},"scores":[96,80,66,87],"age":19,"gender":"female"}
+{"id":6,"school":{"name":"Tsinghua University","graduate":2016,"rank":6},"name":"ff","info":{"city":"北京","job":"programmer"},"scores":[99,82,68],"age":20.5,"gender":"female"}
+{"id":7,"school":{"name":"Wuhan University","graduate":2021,"rank":7},"name":"gg","info":{"city":"北京","job":"programmer"},"scores":[98,84,66],"age":26,"gender":"female"}
+{"id":8,"school":{"name":"North China University of Technology","graduate":2022,"rank":8},"name":"hh","info":{"city":"北京","phone":"1331234","obj":"李四"},"scores":[88,75,79],"age":22,"gender":"male"}
