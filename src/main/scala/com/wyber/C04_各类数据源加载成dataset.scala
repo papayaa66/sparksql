@@ -14,12 +14,13 @@ object C04_各类数据源加载成dataset {
       .master("local")
       .getOrCreate()
 
-    //    loadCsv(spark)
-    //    loadJson(spark)
-    //    loadJson2(spark)
-    //    loadJDBC(spark)
-    writeFileTypes(spark)
-
+//    loadCsv(spark)
+//    loadJson(spark)
+//    loadJson2(spark)
+//    loadJDBC(spark)
+//    writeFileTypes(spark)
+//    loadParquet(spark)
+    loadOrc(spark)
     spark.close()
   }
 
@@ -188,5 +189,21 @@ object C04_各类数据源加载成dataset {
     df2.write.csv("data/sql/out-csv/")
 
 
+  }
+
+  // 读Parquet文件
+  // parquet不需要手动传入schema，因为parquet是自我描述类型的列式存储文件格式（文件内部就带有表结构信息）
+  def loadParquet(spark: SparkSession): Unit = {
+    val df = spark.read.parquet("data/sql/out-parquet")
+    df.printSchema()
+    df.show()
+  }
+
+  // 读Orc文件
+  // Orc不需要手动传入schema，因为Orc是自我描述类型的列式存储文件格式（文件内部就带有表结构信息）
+  def loadOrc(spark: SparkSession): Unit = {
+    val df = spark.read.orc("data/sql/out-orc")
+    df.printSchema()
+    df.show()
   }
 }
