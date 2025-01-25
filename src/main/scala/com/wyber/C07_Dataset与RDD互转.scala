@@ -3,9 +3,7 @@ package main.scala.com.wyber
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{Dataset, Encoders, SparkSession}
 import cn.wyber.sparksql.beans.JavaDoitStudent
-
-
-
+import org.apache.log4j.{Level, Logger}
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.{DataFrame, Dataset, Encoders, Row, SparkSession}
@@ -22,6 +20,7 @@ class DoitStudent(var id:Int,val name:String,val gender:String) extends Serializ
 class DoitStudent2(@BeanProperty var id:Int, @BeanProperty var name:String, @BeanProperty var gender:String) extends Serializable
 
 object C07_RDD转Dataset {
+  Logger.getLogger("org").setLevel(Level.WARN)
   def main(args: Array[String]): Unit = {
 
     val spark = SparkSession.builder()
@@ -74,8 +73,8 @@ object C07_RDD转Dataset {
     // javabean，可以用Encoders.bean(classOf[JavaBean])来对数据进行解构生成schema
     // 它底层是用反射手段来获取类中的成员属性名和属性类型
     // 它底层反射代码并不是直接反射属性名，而是反射属性的setter方法名，得到属性名
-    val rdd7: RDD[JavaDoitStudent] = spark.sparkContext.makeRDD(Seq(new JavaDoitStudent(1, "宝洁", "male"), new JavaDoitStudent(2, "如梦", "female")))
-    val ds7 = spark.createDataset(rdd7)(Encoders.bean(classOf[JavaDoitStudent]))
+    // val rdd7: RDD[JavaDoitStudent] = spark.sparkContext.makeRDD(Seq(new JavaDoitStudent(1, "宝洁", "male"), new JavaDoitStudent(2, "如梦", "female")))
+    // val ds7 = spark.createDataset(rdd7)(Encoders.bean(classOf[JavaDoitStudent]))
     // ds7.printSchema()
     // ds7.show()
 
@@ -85,10 +84,6 @@ object C07_RDD转Dataset {
     val ds8 = spark.createDataset(rdd8)(Encoders.bean(classOf[DoitStudent2]))
     ds8.printSchema()
     ds8.show()
-
-
-
-
 
 
 
